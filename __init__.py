@@ -53,29 +53,48 @@ class APOD:
 
         _url = f"https://api.nasa.gov/planetary/apod?api_key={key}"
 
-        # Pull `count` number of random images.
-        if count is not None and start is None:
-            data = get(
-                f"{_url}&count={count}"
-            )
 
-        # Pull back-dated images starting from `start` up to `end`.
-        if end is not None:
-            data = get(
-                f"{_url}&start_date={start}&end={end}"
-            )
+        """ Pull a random count, if no other parameters are given. """
+        if count is not None and (start is None and end is not None):
+            data = loads( get(f"{_url}&count={count}") )
 
-        # Pull a single, specific date.
-        if end is None and start is not None:
-            data = get(
-                f"{_url}&date={start}
-            )
+        """ If a count is given, and a start or end date is given,
+        that's a FlagError. """
+        else:
+            raise FlagError(
+                f"Random count and specified dates are not compatible.\n"
+                f"Please only use either --random or --start and --end."
+            ); exit()
 
-        # Pull todays date.
-        if start is None:
-            data = get( _url )
+        """ If no count is given and we have either a start or an end,
+        we need more information before we can make a decision. """
+        if count is None and (start is not None or end is not None):
 
-        data = loads(data)
+            """ If we have an end date but no start date, we're pulling
+            a range of dates starting with today. """
+            if start is None and is end is not None:
+                data = loads( get(f"{_url}&start_date={today}&end_date={end}") )
+
+            """ If we have a start and an end date, we're pulling a range of
+            dates that does not start with today. """
+            elif start is not None and end is not None:
+
+                # Check to make sure a valid range is given.
+                if start <= end: raise FlagError(
+                    "Start date can not be before end date."
+                ); exit()
+                # Otherwise, pull the range.
+                else: data = loads(
+                    get(f"{_url}&start_date={start}&end_date={end}")
+                )
+
+            """ If no values are given at all, then just pull todays image. """
+            elif start is None and end is None:
+                data = loads(
+                    get(f"{_url}")
+                )
+
+
 
 
 if __name__ == "__main__":
