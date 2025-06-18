@@ -5,6 +5,9 @@ from argparse import ArgumentTypeError
 from json import loads
 
 
+today = datetime.strftime(datetime.today(), "%Y-%m-%d")
+
+
 #TODO: move this to a STANDARDS module.
 def ISO8601(date: str) -> datetime:
     """
