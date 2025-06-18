@@ -51,7 +51,7 @@ class APOD:
         
         """
 
-        _url = "https://api.nasa.gov/planetary/apod?api_key={key}"
+        _url = f"https://api.nasa.gov/planetary/apod?api_key={key}"
 
         # Pull `count` number of random images.
         if count is not None and start is None:
