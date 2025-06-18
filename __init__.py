@@ -44,6 +44,10 @@ class APOD:
                   end=None,
                   count=None  ):
         """
+            Pull the picture of the day from the NASA website.  By default
+        it grabs todays most recent picture, however it is very easy to select
+        pictures from a range of historic days as well as random pictures from
+        a multitude of days.
         
         """
 
