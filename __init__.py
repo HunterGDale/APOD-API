@@ -28,6 +28,11 @@ def ISO8601(date: str) -> datetime:
         )
 
 
+class FlagError(Exception):
+    def __init__(self, message)
+        super().__init__(message)
+
+
 class APOD:
     """
     """
